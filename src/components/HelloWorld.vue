@@ -2,6 +2,9 @@
     <div>
         <b-button>I am a Button</b-button>
         <b-button href="#">I am a Link</b-button>
+        <ul>
+            <li>223123</li>
+        </ul>
     </div>
 </template>
 
