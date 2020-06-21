@@ -5,27 +5,37 @@
         <ul>
             <li>223123</li>
         </ul>
+        <p v-for="(article, index) in allArticles" :key="index">
+            {{article}}
+        </p>
     </div>
 </template>
 
 <script>
+    import {mapActions, mapGetters} from "vuex";
+
     export default {
-        data() {
-            return {
-                apiUrl: process.env.VUE_APP_API_URL
-            };
-        },
         name: "HelloWorld",
         mounted() {
-            this.$axios.get(`${this.apiUrl}articles`);
+            this.fetchArticles('test payload');
             this.test();
         },
         props: {
             msg: String
         },
         methods: {
+            ...mapActions([
+                'fetchArticles',
+            ]),
             test() {
+                console.log('test')
             }
+        },
+        computed: {
+            ...mapGetters([
+                'allArticles',
+                'articlesCount',
+            ])
         }
     };
 </script>
