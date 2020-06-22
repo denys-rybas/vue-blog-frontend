@@ -1,14 +1,34 @@
 import Vue from "vue";
+import axios from 'axios';
+import VueAxios from "vue-axios";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import axios from "axios";
 import {BootstrapVue, IconsPlugin} from 'bootstrap-vue'
 import "./assets/styles/app.scss"
 
+//axios
+Vue.use(VueAxios, axios);
 
 Vue.config.productionTip = false;
-Vue.prototype.$axios = axios;
+const token = localStorage.getItem('access_token');
+if (token) {
+	Vue.axios.defaults.headers.common['Authorization'] = `JWT ${token}`
+}
+Vue.axios.interceptors.response.use(
+	function(response) { return response;},
+	function(error) {
+		// handle error
+		if (error.response) {
+			const errorMessage = error.response.data.message;
+			console.error(errorMessage);
+			this.$bvToast.toast(errorMessage, {
+				title: `Error`,
+				variant: 'danger',
+				solid: true
+			})
+		}
+	});
 
 // Install BootstrapVue
 Vue.use(BootstrapVue);
@@ -17,7 +37,7 @@ Vue.use(IconsPlugin);
 
 
 new Vue({
-    router,
-    store,
-    render: h => h(App)
+	router,
+	store,
+	render: h => h(App)
 }).$mount("#app");
