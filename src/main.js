@@ -4,36 +4,55 @@ import VueAxios from "vue-axios";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import {BootstrapVue, IconsPlugin} from 'bootstrap-vue'
-import "./assets/styles/app.scss"
+import {
+	BootstrapVue,
+	IconsPlugin,
+	LayoutPlugin,
+	ModalPlugin,
+	CardPlugin,
+	VBScrollspyPlugin,
+	DropdownPlugin,
+	TablePlugin
+} from 'bootstrap-vue';
+import "./assets/styles/app.scss";
+import {errorNotification} from "./toasts";
 
 //axios
 Vue.use(VueAxios, axios);
-
-Vue.config.productionTip = false;
-const token = localStorage.getItem('access_token');
-if (token) {
-	Vue.axios.defaults.headers.common['Authorization'] = `JWT ${token}`
-}
-Vue.axios.interceptors.response.use(
-	function(response) { return response;},
-	function(error) {
-		// handle error
-		if (error.response) {
-			const errorMessage = error.response.data.message;
-			console.error(errorMessage);
-			this.$bvToast.toast(errorMessage, {
-				title: `Error`,
-				variant: 'danger',
-				solid: true
-			})
-		}
-	});
 
 // Install BootstrapVue
 Vue.use(BootstrapVue);
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin);
+// This imports all the layout components such as <b-container>, <b-row>, <b-col>:
+Vue.use(LayoutPlugin);
+// This imports <b-modal> as well as the v-b-modal directive as a plugin:
+Vue.use(ModalPlugin);
+// This imports <b-card> along with all the <b-card-*> sub-components as a plugin:
+Vue.use(CardPlugin);
+// This imports directive v-b-scrollspy as a plugin:
+Vue.use(VBScrollspyPlugin);
+// This imports the dropdown and table plugins
+Vue.use(DropdownPlugin);
+Vue.use(TablePlugin);
+
+Vue.config.productionTip = false;
+
+const token = localStorage.getItem('access_token');
+if (token) {
+	Vue.axios.defaults.headers.common['Authorization'] = `JWT ${token}`
+}
+Vue.axios.interceptors.response.use(
+	function (response) {
+		return response;
+	},
+	function (error) {
+		// handle error
+		if (error.response) {
+			const errorMessage = error.response.data.message || 'Ooops';
+			errorNotification(errorMessage);
+		}
+	});
 
 
 new Vue({

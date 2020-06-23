@@ -4,16 +4,16 @@
 			<h3>Register</h3>
 
 			<b-form-group
-							label="Your name:"
-							label-for="name"
-							description="This name will be used in comments."
+							label="Username:"
+							label-for="username"
+							description="It must be unique. This name will be used in comments."
 			>
 				<b-form-input
-								id="name"
-								v-model="registerForm.name"
+								id="username"
+								v-model="registerForm.username"
 								type="text"
 								required
-								placeholder="Enter your name"
+								placeholder="Enter your username"
 				/>
 			</b-form-group>
 
@@ -61,13 +61,14 @@
 
 <script>
 	import {mapActions} from "vuex";
+	import {successNotification} from "../../toasts";
 
 	export default {
 		name: "Register",
 		data() {
 			return {
 				registerForm: {
-					name: '',
+					username: '',
 					email: '',
 					password: ''
 				}
@@ -77,7 +78,13 @@
 			...mapActions(['register']),
 
 			async onRegister() {
-				await this.register(this.registerForm)
+				try {
+					await this.register(this.registerForm);
+					successNotification('New account was created.');
+					await this.$router.push('/login')
+				} catch (e) {
+					console.log(e)
+				}
 			}
 		}
 	}
