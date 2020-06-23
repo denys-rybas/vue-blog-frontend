@@ -36,6 +36,7 @@
 			</button>
 
 			<p class="forgot-password text-right">
+				Don't have an account yet?
 				<router-link :to="{name: 'Register'}">
 					Register
 				</router-link>

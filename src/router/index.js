@@ -9,9 +9,8 @@ import Login from "../components/auth/Login";
 Vue.use(VueRouter);
 
 function authGuard(to, from, next) {
-	let isAuthenticated = false;
-//this is just an example. You will have to find a better or
-// centralised way to handle you localstorage data handling
+	let isAuthenticated;
+
 	isAuthenticated = !!localStorage.getItem('access_token');
 	if (isAuthenticated) {
 		next(); // allow to enter route
@@ -61,15 +60,3 @@ const router = new VueRouter({
 
 export default router;
 
-/*router.beforeEach((to, from, next) => {
-	// redirect to login page if not logged in and trying to access a restricted page
-	const publicPages = ['/login', '/register'];
-	const authRequired = !publicPages.includes(to.path);
-	const loggedIn = localStorage.getItem('user');
-
-	if (authRequired && !loggedIn) {
-		return next('/login');
-	}
-
-	next();
-});*/
