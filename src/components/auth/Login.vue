@@ -1,18 +1,18 @@
 <template>
 	<b-card class="p-3">
-		<b-form @submit.prevent="login()">
+		<b-form @submit.prevent="onLogin()">
 			<h3>Sign Up</h3>
 
 			<b-form-group
-							label="Email address:"
-							label-for="email"
+							label="Username:"
+							label-for="username"
 			>
 				<b-form-input
-								id="email"
-								v-model="loginForm.email"
-								type="email"
+								id="username"
+								v-model="loginForm.username"
+								type="text"
 								required
-								placeholder="Enter email"
+								placeholder="Enter username"
 				/>
 			</b-form-group>
 
@@ -45,22 +45,36 @@
 </template>
 
 <script>
-	import {mapActions} from "vuex";
+	import {mapActions, mapGetters} from "vuex";
+	import {successNotification} from "../../toasts";
 
 	export default {
 		name: "Login",
 		data() {
 			return {
 				loginForm: {
-					email: '',
+					username: '',
 					password: ''
 				}
 			}
 		},
+		computed: {
+			...mapGetters({
+				accessToken: 'getToken'
+			})
+		},
 		methods: {
 			...mapActions(['login']),
+
 			async onLogin() {
-				await this.login(this.loginForm)
+				try {
+					await this.login(this.loginForm);
+					await localStorage.setItem('access_token', this.accessToken);
+					await this.$router.push('/');
+					successNotification();
+				} catch (e) {
+					console.log(e)
+				}
 			}
 		}
 	}

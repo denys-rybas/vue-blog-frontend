@@ -38,21 +38,23 @@ Vue.use(TablePlugin);
 
 Vue.config.productionTip = false;
 
-const token = localStorage.getItem('access_token');
-if (token) {
-	Vue.axios.defaults.headers.common['Authorization'] = `JWT ${token}`
-}
-Vue.axios.interceptors.response.use(
-	function (response) {
-		return response;
-	},
-	function (error) {
-		// handle error
-		if (error.response) {
-			const errorMessage = error.response.data.message || 'Ooops';
-			errorNotification(errorMessage);
-		}
-	});
+
+
+Vue.axios.interceptors.response.use(config => {
+	const token = localStorage.getItem("access_token");
+	if (token) {
+		Vue.axios.defaults.headers.common['Authorization'] = `JWT ${token}`
+	}
+	return config
+}, error => {
+	if (error.response) {
+		const err = error.response.data;
+		const errorMessage = err.message || err.description || 'Ooops';
+		errorNotification(errorMessage);
+
+		return Promise.reject(error)
+	}
+});
 
 
 new Vue({

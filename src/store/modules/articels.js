@@ -5,12 +5,8 @@ export default {
 		articles: []
 	},
 	getters: {
-		allArticles(state) {
-			return state.articles
-		},
-		articlesCount(state) {
-			return state.articles.length
-		}
+		allArticles: s => s.articles,
+		articlesCount: s => s.articles.length
 	},
 	mutations: {
 		updateArticles(state, posts) {
