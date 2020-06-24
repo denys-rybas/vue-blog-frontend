@@ -5,6 +5,7 @@ import About from "../pages/About";
 import PageNotFound from "../layouts/PageNotFound";
 import Register from "../components/auth/Register";
 import Login from "../components/auth/Login";
+import Article from "../pages/Article";
 
 Vue.use(VueRouter);
 
@@ -41,6 +42,12 @@ const routes = [
 		path: "/about",
 		name: "About",
 		component: About,
+		beforeEnter: authGuard,
+	},
+	{
+		path: "/article/:slug",
+		name: "Article",
+		component: Article,
 		beforeEnter: authGuard,
 	},
 	{path: "*", component: PageNotFound},

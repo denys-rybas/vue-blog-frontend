@@ -2,15 +2,17 @@
     <div>
         <b-navbar toggleable="lg" type="dark" variant="info">
             <b-container>
-                <b-navbar-brand href="#">NavBar</b-navbar-brand>
+                <b-navbar-brand href="#">
+                    Blog
+                </b-navbar-brand>
 
                 <b-navbar-toggle target="nav-collapse"/>
 
                 <b-collapse id="nav-collapse" is-nav>
                     <b-navbar-nav>
-                        <router-link to="/">Home</router-link>
+                        <router-link to="/" class="p-2 text-light">Home</router-link>
 
-                        <router-link to="/about">About</router-link>
+                        <router-link to="/about" class="p-2 text-light">About</router-link>
                     </b-navbar-nav>
 
                     <!-- Right aligned nav items -->
@@ -31,5 +33,4 @@
 </script>
 
 <style scoped>
-
 </style>
